@@ -11,7 +11,7 @@ object ApplicationBuild extends Build {
     // Add your project dependencies here,
     "javax.jcr" % "jcr" % "2.0",
     "org.apache.jackrabbit" % "jackrabbit-core" % "2.6.0",
-    //"org.apache.jackrabbit" % "jackrabbit-jcr-rmi" % "2.6.0",
+    "org.apache.jackrabbit" % "jackrabbit-jcr-rmi" % "2.6.0",
     "org.apache" % "jackrabbit-ocm" % "2.0.0",
     javaCore
   )

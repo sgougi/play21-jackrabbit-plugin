@@ -19,3 +19,5 @@ dist
 .cache
 /bin
 .shell_history
+/samples/jackrabbit-sample-app/repository
+*.log

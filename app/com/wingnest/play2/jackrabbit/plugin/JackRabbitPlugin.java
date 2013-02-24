@@ -24,17 +24,21 @@ import com.wingnest.play2.jackrabbit.plugin.director.Director;
 import com.wingnest.play2.jackrabbit.plugin.manager.JackRabbitManager;
 import com.wingnest.play2.jackrabbit.plugin.manager.Manager;
 
+import play.Application;
 import play.Play;
 import play.Plugin;
 
 public class JackRabbitPlugin extends Plugin {
 
-	private Director DIRECTOR = null;
+	private static Director DIRECTOR = null;
+	
+	public JackRabbitPlugin(final Application application) {
+	}
 	
 	@Override
 	public void onStart() {
+		ReflectionUtils.setClassLoader(Play.application().classloader());		
 		if ( DIRECTOR == null ) {
-			ReflectionUtils.setClassLoader(Play.application().classloader());
 			DIRECTOR = new DefaultDirector(new JackRabbitManager());
 			Jcr.setRawStuff(new RawStuff() {
 				@Override

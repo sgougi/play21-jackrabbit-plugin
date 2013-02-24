@@ -28,6 +28,7 @@ import org.apache.jackrabbit.ocm.exception.RepositoryException;
 import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
 import org.apache.jackrabbit.ocm.manager.impl.ObjectContentManagerImpl;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.AnnotationMapperImpl;
+import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
 
 import play.Play;
 
@@ -78,8 +79,10 @@ public class OCM {
 		private static void refresh() {
 			JackRabbitLogger.debug("Nodes.refresh");
 			for ( final  Class<?> javaClass : TypeUtils.getSubTypesOf(Play.application(), MODELS_PACKAGE, null) ) {
-				nodes.add(javaClass);
-				JackRabbitLogger.debug("registered Node class : %s ", javaClass.getName());
+				if ( javaClass.isAnnotationPresent(Node.class) ) {
+					nodes.add(javaClass);
+					JackRabbitLogger.debug("registered Node class : %s ", javaClass.getName());
+				}
 			}
 		}
 	}
