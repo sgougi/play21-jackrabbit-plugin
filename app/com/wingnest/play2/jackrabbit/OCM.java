@@ -55,6 +55,17 @@ public class OCM {
 			throw new RepositoryException(e);
 		}
 	}
+	
+	public static ObjectContentManager getOCM(final String workspace)  {
+		try {
+			final Session session = getLocalSession(Jcr.getConfig().getUserId(), Jcr.getConfig().getPassword(), workspace);			
+			return createOCM(session);
+		} catch ( RepositoryException e ) {
+			throw e;
+		} catch ( Exception e ) {
+			throw new RepositoryException(e);
+		}
+	}
 
 	public static ObjectContentManager getOCM(final String userId, final String password) {
 		try {
@@ -66,6 +77,17 @@ public class OCM {
 			throw new RepositoryException(e);
 		}
 	}
+	
+	public static ObjectContentManager getOCM(final String userId, final String password, final String workspace) {
+		try {
+			final Session session = getLocalSession(userId, password, workspace);			
+			return createOCM(session);
+		} catch ( RepositoryException e ) {
+			throw e;
+		} catch ( Exception e ) {
+			throw new RepositoryException(e);
+		}
+	}	
 
 	//
 
@@ -148,5 +170,10 @@ public class OCM {
 	private static Session getLocalSession(final String userId, final String password) throws javax.jcr.RepositoryException {
 		final Session session = Jcr.login(userId, password);
 		return session;
-	}	
+	}
+	
+	private static Session getLocalSession(final String userId, final String password, final String workspace) throws javax.jcr.RepositoryException {
+		final Session session = Jcr.login(userId, password, workspace);
+		return session;
+	}		
 }
