@@ -16,19 +16,21 @@ public class LogData {
 	public String getTitle() {
 		return title;
 	}
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
+	
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
+	
 	public String getLogBody() {
 		return logBody;
 	}
-	public void setLogBody(String logBody) {
+	public void setLogBody(final String logBody) {
 		this.logBody = logBody;
 	}
 

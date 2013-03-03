@@ -2,9 +2,7 @@ package controllers;
 
 import static play.data.Form.form;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import models.Comment;
 import models.Log;
 import models.formdata.CommentData;
 import models.formdata.LogData;
@@ -25,12 +23,11 @@ public class Application extends Controller {
 	private ObjectContentManager ocm;
 	
 	@Inject
-	public Application(JackRabbitContext ctx) {
+	public Application(final JackRabbitContext ctx) {
 		ocm = ctx.getObjectContentManager();
 	}
 	
     public Result index() {
-		if ( ocm == null ) throw new IllegalStateException("bug");
 		return ok(index.render());
     }
   
@@ -39,17 +36,17 @@ public class Application extends Controller {
 		if ( logForm.hasErrors() ) {
 			return badRequest(logForm.errorsAsJson());
 		}
-
-		// TODO
-//		@SuppressWarnings("unused")
-//		Log log = LogService.getInstance().create(logForm.get());
-
+		@SuppressWarnings("unused")
+		Log log = Log.create(ocm, logForm.get());
+		ocm.save();		
 		return ok();
 	}
 
 	public Result getLogs() {
-		// TODO
-		List<Log> logModels = new ArrayList<Log>(); 
+		final Iterable<Log> logModels = Log.getLogs(ocm); 
+		for ( final Log log : logModels ) {
+			Logger.debug(String.format("id = %s , path = %s", log.getId(), log.getPath()));
+		}
 		return ok(logs.render(logModels));
 	}
 	
@@ -61,14 +58,14 @@ public class Application extends Controller {
 		if ( logId == null ) {
 			return notFound();
 		}
-
 		boolean disupdateFlag = Boolean.parseBoolean(form().bindFromRequest().get("disupdateFlagLog"));
-		System.out.println("disupdateddate = " + disupdateFlag);
-		
-		// TODO
-		if ( true )
-			return notFound();
-
+		Logger.debug(String.format("logId = %s, disupdateddate = %s", logId, disupdateFlag));
+		final Log log = (Log)ocm.getObjectByUuid(logId);
+		if ( log == null )
+			return notFound();		
+		@SuppressWarnings("unused")
+		final Comment comment = Comment.create(ocm, log, commentForm.get(), disupdateFlag);
+		ocm.save();		
 		return ok();
 	}    
 }

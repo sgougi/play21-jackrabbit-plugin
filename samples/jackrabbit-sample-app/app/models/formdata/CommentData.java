@@ -10,13 +10,15 @@ public class CommentData {
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
+	
 	public String getContent() {
 		return content;
 	}
-	public void setContent(String content) {
+	public void setContent(final String content) {
 		this.content = content;
 	}
+	
 }

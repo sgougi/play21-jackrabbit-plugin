@@ -19,7 +19,7 @@ public class ConfigConsts {
 
 	public static final String CONF_JCR_USERID = "jackrabbit.jcr.userid";
 	public static final String CONF_JCR_PASSWORD = "jackrabbit.jcr.password";
-	public static final String CONF_JCR_DEFAULT_WORKSPACE = "jackrabbit.jcr.default_workspace";
+//	public static final String CONF_JCR_DEFAULT_WORKSPACE = "jackrabbit.jcr.default_workspace";
 	public static final String CONF_JCR_REPOSITORY_CONFIG = "jackrabbit.jcr.repository_config";
 	public static final String CONF_JCR_REPOSITORY_URI = "jackrabbit.jcr.repository_uri";
 	public static final String CONF_JCR_HAS_RECREATION_REQUIRE = "jackrabbit.jcr.recreation_require";
