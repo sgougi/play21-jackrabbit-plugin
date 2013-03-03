@@ -18,7 +18,7 @@ package com.wingnest.play2.jackrabbit.plugin.utils;
 import java.io.File;
 import java.io.IOException;
 
-public class FileUtils {
+final public class FileUtils {
 
 	public static void deepDelete(final File file) throws IOException {
 		if ( !file.exists() )

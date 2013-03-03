@@ -28,7 +28,7 @@ import play.Application;
 import play.Play;
 import play.Plugin;
 
-public class JackRabbitPlugin extends Plugin {
+final public class JackRabbitPlugin extends Plugin {
 
 	private static Director DIRECTOR = null;
 	
@@ -47,7 +47,7 @@ public class JackRabbitPlugin extends Plugin {
 				}
 			});
 		}
-
+		
 		DIRECTOR.onApplicationStart();
 	}
 

@@ -27,10 +27,14 @@ import com.wingnest.play2.jackrabbit.plugin.manager.Manager;
 import com.wingnest.play2.jackrabbit.plugin.manager.Manager.Config;
 
 
-public class Jcr {
+final public class Jcr {
 
 	final private static ThreadLocal<Map<String, Session>> TL_SESSION_MAP = new ThreadLocal<Map<String, Session>>(); 
 
+	public interface RawStuff {
+		Manager getManager();
+	}
+	
 	public static Config getConfig() {
 		return RAW_STUFF.getManager().getConfig();
 	}
@@ -89,9 +93,5 @@ public class Jcr {
 	private static String makeSessionMapKey(final String userId, final String password, final String workspace) {
 		return new StringBuffer().append(userId).append(":").append(password).append(":").append(workspace == null ? "" : workspace).toString();
 	}
-	
-	public interface RawStuff {
-		Manager getManager();
-	}
-		
+			
 }

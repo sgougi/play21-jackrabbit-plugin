@@ -35,7 +35,7 @@ import play.Play;
 import com.wingnest.play2.jackrabbit.plugin.JackRabbitLogger;
 import com.wingnest.play2.jackrabbit.plugin.utils.TypeUtils;
 
-public class OCM {
+final public class OCM {
 
 	/** namespace prefix constant */
 	public static final String OCM_NAMESPACE_PREFIX = "ocm";

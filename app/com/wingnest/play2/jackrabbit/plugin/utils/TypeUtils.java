@@ -33,7 +33,6 @@ final public class TypeUtils {
 		return new StringBuffer().append(name.substring(0, 1).toLowerCase()).append(name.substring(1)).toString();
 	}
 	
-
 	@SuppressWarnings("unchecked")
 	public static <T> Set<Class<T>> getSubTypesOf(final Application application, final String packageName, final Class<T> clazz) {
 		final Set<Class<T>> classes = new HashSet<Class<T>>();
@@ -52,8 +51,7 @@ final public class TypeUtils {
 		}
 		return classes;
 	}
-	
-	
+		
 	private TypeUtils() {
 	}
 
