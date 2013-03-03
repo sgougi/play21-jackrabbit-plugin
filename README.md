@@ -42,10 +42,10 @@ At a command prompt, type the following commands:
 
 There are basic usage in the source code of a [sample application](samples). 
 
-* [Annotated model classes](samples/jackrabbit-simple-app/app/models)
-* [Application configuration: conf/application.conf](samples/jackrabbit-simple-app/conf/application.conf)
-* [Dependency settings: project/Build.scala](samples/jackrabbit-simple-app/project/Build.scala)  
-* [Controller with OCM](samples/jackrabbit-simple-app/app/controllers/Application.java)
+* [Annotated model classes](samples/jackrabbit-sample-app/app/models)
+* [Application configuration: conf/application.conf](samples/jackrabbit-sample-app/conf/application.conf)
+* [Dependency settings: project/Build.scala](samples/jackrabbit-sample-app/project/Build.scala)  
+* [Controller with OCM](samples/jackrabbit-sample-app/app/controllers/Application.java)
 
 ## Facade Class for JCR
 
