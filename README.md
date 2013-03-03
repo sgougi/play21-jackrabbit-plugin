@@ -45,7 +45,7 @@ There are basic usage in the source code of a [sample application](samples).
 * [Annotated model classes](samples/jackrabbit-simple-app/app/models)
 * [Application configuration: conf/application.conf](samples/jackrabbit-simple-app/conf/application.conf)
 * [Dependency settings: project/Build.scala](samples/jackrabbit-simple-app/project/Build.scala)  
-* [Controller with transaction](samples/jackrabbit-simple-app/app/controllers/Application.java)
+* [Controller with OCM](samples/jackrabbit-simple-app/app/controllers/Application.java)
 
 ## Facade Class for JCR
 
