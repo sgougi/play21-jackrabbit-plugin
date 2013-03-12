@@ -22,7 +22,7 @@ Install
   
   2)  Executing the command for installing the JackRabbit Plugin
                
-         % git git@github.com:sgougi/play21-jackrabbit-plugin.git
+         % git clone git@github.com:sgougi/play21-jackrabbit-plugin.git
          
   3)  Publishing the JackRabbit Plugin to your local repository
 
