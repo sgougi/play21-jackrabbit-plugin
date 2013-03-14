@@ -18,6 +18,7 @@ object ApplicationBuild extends Build {
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here
+    publishArtifact in(Compile, packageDoc) := false,
     organization := "com.wingnest.play2"
   )
 
