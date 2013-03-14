@@ -25,7 +25,11 @@ import javax.jcr.Repository;
 import org.apache.jackrabbit.core.RepositoryImpl;
 import org.apache.jackrabbit.core.config.RepositoryConfig;
 import org.apache.jackrabbit.ocm.exception.RepositoryException;
+import org.apache.jackrabbit.rmi.client.ClientAdapterFactory;
+import org.apache.jackrabbit.rmi.client.ClientRepositoryFactory;
 import org.apache.jackrabbit.rmi.repository.URLRemoteRepository;
+
+import play.Play;
 
 import com.wingnest.play2.jackrabbit.plugin.JackRabbitLogger;
 import com.wingnest.play2.jackrabbit.plugin.utils.FileUtils;
@@ -49,7 +53,9 @@ public class JackRabbitManager implements Manager {
 	}
 
 	private Repository createRepository(final String url) {
-		if ( url.startsWith("file:") ) {
+		if ( url.startsWith("rmi://") ) {
+			return createRmiRepository(url);
+		} else if ( url.startsWith("file:") ) {
 			return createFileRepository(url);
 		} else if ( url.startsWith("http://") ) {
 			return createUrlRemoteRepository(url);
@@ -98,6 +104,16 @@ public class JackRabbitManager implements Manager {
 			throw new RepositoryException("Could not create url remote repository instance at url: " + url, e);
 		}
 	}
+	
+	private Repository createRmiRepository(final String url) {
+		try {
+			Play.application().classloader().loadClass("org.apache.jackrabbit.rmi.client.ClientRepositoryFactory");
+			final ClientRepositoryFactory factory = new ClientRepositoryFactory(new ClientAdapterFactory());
+			return factory.getRepository(url);
+		} catch ( Exception e ) {
+			throw new RepositoryException("Could not create rmi repository instance at url: " + url, e);
+		}
+	}	
 
 	@Override
 	public Config getConfig() {
