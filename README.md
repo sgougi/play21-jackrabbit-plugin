@@ -1,7 +1,7 @@
 What is Jackrabbit Plugin ?
 ============
 
-**JackRabbit plugin** is a module that seamlessly integrates the [Apache JackRabbit](http://jackrabbit.apache.org/) with  the [Play! framework](http://www.playframework.org/) 2. 
+**Jackrabbit plugin** is a module that seamlessly integrates the [Apache JackRabbit](http://jackrabbit.apache.org/) with  the [Play! framework](http://www.playframework.org/) 2. 
 
 Requirements
 =========
