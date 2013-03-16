@@ -1,4 +1,4 @@
-What is JackRabbit Plugin ?
+What is Jackrabbit Plugin ?
 ============
 
 **JackRabbit plugin** is a module that seamlessly integrates the [Apache JackRabbit](http://jackrabbit.apache.org/) with  the [Play! framework](http://www.playframework.org/) 2. 
@@ -12,19 +12,19 @@ Requirements
 Dependencies
 ============
 
-* [Apache JackRabbit 2.6.0](http://jackrabbit.apache.org/)
-* [Apache JackRabbit OCM 2.0.0](http://jackrabbit.apache.org/object-content-mapping.html)
+* [Apache Jackrabbit 2.6.0](http://jackrabbit.apache.org/)
+* [Apache Jackrabbit OCM 2.0.0](http://jackrabbit.apache.org/object-content-mapping.html)
 
 Install
 ====
 
   1)  Install Play framework 2.1.0
   
-  2)  Executing the command for installing the JackRabbit Plugin
+  2)  Executing the command for installing the Jackrabbit Plugin
                
          % git clone git@github.com:sgougi/play21-jackrabbit-plugin.git
          
-  3)  Publishing the JackRabbit Plugin to your local repository
+  3)  Publishing the Jackrabbit Plugin to your local repository
 
          % cd play21-jackrabbit-plugin
          % play publish-local
@@ -66,5 +66,5 @@ Known Issues
 
 Licence
 ========
-JackRabbit Plugin is distributed under the [Apache 2 licence](http://www.apache.org/licenses/LICENSE-2.0.html).
+Jackrabbit Plugin is distributed under the [Apache 2 licence](http://www.apache.org/licenses/LICENSE-2.0.html).
 
