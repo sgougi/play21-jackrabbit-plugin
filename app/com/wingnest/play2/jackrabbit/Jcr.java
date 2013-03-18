@@ -45,7 +45,7 @@ final public class Jcr {
 
 	public static Session login(final String user, final String password) throws RepositoryException  {
 		Session session = getSessionMap().get(makeSessionMapKey(user, password, null));
-		if ( session != null ) return session;		
+		if ( session != null && session.isLive() ) return session;		
 		try {
 			session = getRepository().login(new SimpleCredentials(user, password.toCharArray()), null);
 			if ( session != null ) {
@@ -59,7 +59,7 @@ final public class Jcr {
 
 	public static Session login(final String user, final String password, final String workspace) throws RepositoryException  {
 		Session session = getSessionMap().get(makeSessionMapKey(user, password, workspace));
-		if ( session != null ) return session;		
+		if ( session != null && session.isLive() ) return session;		
 		try {
 			session = getRepository().login(new SimpleCredentials(user, password.toCharArray()), workspace);
 			if ( session != null ) {
