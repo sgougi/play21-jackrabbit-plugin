@@ -32,7 +32,7 @@ import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
 
 import play.Play;
 
-import com.wingnest.play2.jackrabbit.plugin.JackRabbitLogger;
+import com.wingnest.play2.jackrabbit.plugin.JackrabbitLogger;
 import com.wingnest.play2.jackrabbit.plugin.utils.TypeUtils;
 
 final public class OCM {
@@ -99,11 +99,11 @@ final public class OCM {
 				refresh();
 		}
 		private static void refresh() {
-			JackRabbitLogger.debug("Nodes.refresh");
+			JackrabbitLogger.debug("Nodes.refresh");
 			for ( final  Class<?> javaClass : TypeUtils.getSubTypesOf(Play.application(), MODELS_PACKAGE, null) ) {
 				if ( javaClass.isAnnotationPresent(Node.class) ) {
 					nodes.add(javaClass);
-					JackRabbitLogger.debug("registered Node class : %s ", javaClass.getName());
+					JackrabbitLogger.debug("registered Node class : %s ", javaClass.getName());
 				}
 			}
 		}
@@ -123,18 +123,18 @@ final public class OCM {
 	}
 
 	private static void registerOCMNamespace(final Session session) throws javax.jcr.RepositoryException {
-		JackRabbitLogger.debug("Register namespace");
+		JackrabbitLogger.debug("Register namespace");
 		final String[] jcrNamespaces = session.getWorkspace().getNamespaceRegistry().getPrefixes();
 		boolean createNamespace = true;		
 		for ( int i = 0; i < jcrNamespaces.length; i++ ) {
 			if ( jcrNamespaces[i].equals(OCM_NAMESPACE_PREFIX) ) {
 				createNamespace = false;
-				JackRabbitLogger.debug("Jackrabbit OCM namespace exists.");
+				JackrabbitLogger.debug("Jackrabbit OCM namespace exists.");
 			}
 		}
 		if ( createNamespace ) {
 			session.getWorkspace().getNamespaceRegistry().registerNamespace(OCM_NAMESPACE_PREFIX, OCM_NAMESPACE);
-			JackRabbitLogger.debug("Successfully created Jackrabbit OCM namespace.");
+			JackrabbitLogger.debug("Successfully created Jackrabbit OCM namespace.");
 		}
 		if ( session.getRootNode() == null ) {
 			throw new RepositoryException("Jcr session setup not successful.");

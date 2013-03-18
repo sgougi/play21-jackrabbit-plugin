@@ -20,7 +20,7 @@ import java.util.Set;
 
 import play.Application;
 
-import com.wingnest.play2.jackrabbit.plugin.exceptions.JackRabbitUnexpectedException;
+import com.wingnest.play2.jackrabbit.plugin.exceptions.JackrabbitUnexpectedException;
 
 final public class TypeUtils {
 
@@ -47,7 +47,7 @@ final public class TypeUtils {
 					classes.add((Class<T>) c);
 			}
 		} catch ( Exception e ) {
-			throw new JackRabbitUnexpectedException(e);
+			throw new JackrabbitUnexpectedException(e);
 		}
 		return classes;
 	}

@@ -31,10 +31,10 @@ import org.apache.jackrabbit.rmi.repository.URLRemoteRepository;
 
 import play.Play;
 
-import com.wingnest.play2.jackrabbit.plugin.JackRabbitLogger;
+import com.wingnest.play2.jackrabbit.plugin.JackrabbitLogger;
 import com.wingnest.play2.jackrabbit.plugin.utils.FileUtils;
 
-public class JackRabbitManager implements Manager {
+public class JackrabbitManager implements Manager {
 
 	private Config config;
 	private Repository repository;
@@ -42,7 +42,7 @@ public class JackRabbitManager implements Manager {
 	@Override
 	public void initialize(final Config config) {
 		this.config = config;
-		JackRabbitLogger.debug("config = %s", config);
+		JackrabbitLogger.debug("config = %s", config);
 		try {
 			repository = createRepository(config.getRepositoryUrl());
 		} catch ( RepositoryException e ) {
@@ -75,10 +75,10 @@ public class JackRabbitManager implements Manager {
 		} else {
 			repoDir = new File(url.substring(5));
 		}
-		JackRabbitLogger.debug("repoDir : %s", repoDir.getAbsolutePath());
+		JackrabbitLogger.debug("repoDir : %s", repoDir.getAbsolutePath());
 		if ( config.hasRecreateRequire() ) {
 			try {
-				JackRabbitLogger.debug("delete repoDir : " + repoDir.getAbsolutePath());
+				JackrabbitLogger.debug("delete repoDir : " + repoDir.getAbsolutePath());
 				FileUtils.deepDelete(repoDir);
 			} catch ( IOException e ) {
 				throw new RepositoryException("Could not delete directory: " + repoDir.getAbsolutePath());

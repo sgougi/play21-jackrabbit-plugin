@@ -15,9 +15,9 @@
  */
 package com.wingnest.play2.jackrabbit.plugin.exceptions;
 
-public class JackRabbitUnexpectedException extends RuntimeException {
+public class JackrabbitUnexpectedException extends RuntimeException {
 
-	public JackRabbitUnexpectedException(final Exception e) {
+	public JackrabbitUnexpectedException(final Exception e) {
 		super(e);
 	}
 

@@ -17,9 +17,9 @@ package com.wingnest.play2.jackrabbit.plugin;
 
 import play.Logger;
 
-final public class JackRabbitLogger {
+final public class JackrabbitLogger {
 
-	private static final String PLUGIN_PREFIX = "[JackRabbit] ";
+	private static final String PLUGIN_PREFIX = "[Jackrabbit] ";
 
 	static public void info(final String msg, final Object... args) {
 		Logger.info(makeMsg(msg, args));
@@ -49,6 +49,6 @@ final public class JackRabbitLogger {
 		return PLUGIN_PREFIX + String.format(msg, args);
 	}	
 
-	private JackRabbitLogger() {
+	private JackrabbitLogger() {
 	}	
 }
