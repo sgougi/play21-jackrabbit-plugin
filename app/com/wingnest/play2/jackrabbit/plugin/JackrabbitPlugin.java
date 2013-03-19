@@ -17,6 +17,9 @@ package com.wingnest.play2.jackrabbit.plugin;
 
 import org.apache.jackrabbit.ocm.reflection.ReflectionUtils;
 
+import java.lang.reflect.InvocationTargetException;
+import javax.jcr.Repository;
+
 import com.wingnest.play2.jackrabbit.Jcr;
 import com.wingnest.play2.jackrabbit.Jcr.RawStuff;
 import com.wingnest.play2.jackrabbit.plugin.director.DefaultDirector;
@@ -49,6 +52,24 @@ final public class JackrabbitPlugin extends Plugin {
 		}
 		
 		DIRECTOR.onApplicationStart();
+	}
+
+	@Override
+	public void onStop() {
+		shutdownRepository(DIRECTOR.getManager().getRepository());
+		DIRECTOR = null;
+	}
+
+	private void shutdownRepository(Repository repository) {
+		try {
+			repository.getClass().getMethod("shutdown").invoke(repository);
+		} catch (NoSuchMethodException nsme) {
+			// Repository doesn't need to be shutdown
+		} catch (InvocationTargetException ite) {
+			throw new RuntimeException(ite.getTargetException());
+		} catch (IllegalAccessException iae) {
+			throw new RuntimeException(iae);
+		}
 	}
 
 }
