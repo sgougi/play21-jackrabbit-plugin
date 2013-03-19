@@ -51,4 +51,11 @@ final public class JackrabbitPlugin extends Plugin {
 		DIRECTOR.onApplicationStart();
 	}
 
+	@Override
+	public void onStop() {
+		if ( DIRECTOR != null) {
+			DIRECTOR.onApplicationStop();
+			DIRECTOR = null;
+		}
+	 }	
 }

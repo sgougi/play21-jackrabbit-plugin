@@ -17,6 +17,10 @@ package com.wingnest.play2.jackrabbit.plugin.director;
 
 import static com.wingnest.play2.jackrabbit.plugin.ConfigConsts.*;
 
+import java.lang.reflect.InvocationTargetException;
+
+import javax.jcr.Repository;
+
 import com.wingnest.play2.jackrabbit.plugin.manager.Manager;
 import com.wingnest.play2.jackrabbit.plugin.manager.Manager.Config;
 
@@ -35,9 +39,27 @@ public class DefaultDirector implements Director {
 
 	@Override
 	public void onApplicationStart() {
-
+		// no operation
 	}
 
+	@Override
+	public void onApplicationStop() {
+		try {
+			final Repository repo = manager.getRepository();
+			manager.getRepository().getClass().getMethod("shutdown").invoke(repo);
+		} catch ( NoSuchMethodException nsme ) {
+			// Repository doesn't need to be shutdown
+		} catch ( InvocationTargetException ite ) {
+			throw new RuntimeException(ite.getTargetException());
+		} catch ( IllegalAccessException iae ) {
+			throw new RuntimeException(iae);
+		}
+		/**
+		 * contributors :
+		 *   - http://github.com/tjdett : https://github.com/sgougi/play21-jackrabbit-plugin/pull/1
+		 */		
+	}
+	
 	@Override
 	public Manager getManager() {
 		return this.manager;
@@ -50,7 +72,7 @@ public class DefaultDirector implements Director {
 		final String userid = c.getString(CONF_JCR_USERID, "anonymous");
 		final String password = c.getString(CONF_JCR_PASSWORD, "");
 		final String repositoryUri = c.getString(CONF_JCR_REPOSITORY_URI, "file:./repository");
-		// String workspace = p.getProperty(CONF_JCR_DEFAULT_WORKSPACE, "default"); // TODO 不要か？
+		// String workspace = p.getProperty(CONF_JCR_DEFAULT_WORKSPACE, "default"); // TODO
 		final String repoConfiguration = c.getString(CONF_JCR_REPOSITORY_CONFIG, "./conf/repository.xml");
 		final String strHasRecreateRequire = c.getString(CONF_JCR_HAS_RECREATION_REQUIRE, "false");
 		return new DefaultConfig(userid, password, repoConfiguration, repositoryUri, strHasRecreateRequire);
@@ -96,7 +118,6 @@ public class DefaultDirector implements Director {
 		public boolean hasRecreateRequire() {
 			return hasRecreateRequire;
 		}
-
 	}
 
 }

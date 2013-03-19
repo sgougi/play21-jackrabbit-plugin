@@ -21,6 +21,8 @@ public interface Director {
 
 	void onApplicationStart();
 
+	void onApplicationStop();
+	
 	Manager getManager();
 
 }
