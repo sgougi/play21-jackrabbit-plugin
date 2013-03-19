@@ -37,6 +37,14 @@ import com.wingnest.play2.jackrabbit.plugin.utils.TypeUtils;
 
 final public class OCM {
 
+	public interface CreateOCMHook {
+
+		void begin(Session session);
+		
+		void end(Session session, ObjectContentManager ocm);
+
+	}
+
 	/** namespace prefix constant */
 	public static final String OCM_NAMESPACE_PREFIX = "ocm";
 
@@ -44,6 +52,8 @@ final public class OCM {
 	public static final String OCM_NAMESPACE = "http://jackrabbit.apache.org/ocm";
 
 	private static final String MODELS_PACKAGE = "models";
+
+	private static CreateOCMHook createOCMHook = null;
 	
 	public static ObjectContentManager getOCM()  {
 		try {
@@ -87,7 +97,11 @@ final public class OCM {
 		} catch ( Exception e ) {
 			throw new RepositoryException(e);
 		}
-	}	
+	}
+	
+	public static void setCreateOCMHook(final CreateOCMHook hook){
+		OCM.createOCMHook = hook;	
+	}
 
 	//
 
@@ -111,7 +125,8 @@ final public class OCM {
 
 	private static ObjectContentManager createOCM(final Session session) throws javax.jcr.RepositoryException, InvalidNodeTypeDefException, IOException {
 		registerOCMNamespace(session);
-		registerNodeTypes(session);
+		callHook(session, null, true);
+		
 		@SuppressWarnings("rawtypes")
 		final List<Class> classes = new ArrayList<Class>();
 		if ( Play.isDev() ) {
@@ -119,7 +134,23 @@ final public class OCM {
 			Nodes.refresh();
 		}
 		classes.addAll(Nodes.nodes);
-		return new ObjectContentManagerImpl(session, new AnnotationMapperImpl(classes));
+		ObjectContentManager ocm = new ObjectContentManagerImpl(session, new AnnotationMapperImpl(classes));
+		callHook(session, ocm, false);
+		return ocm; 
+	}
+
+	private static void callHook(final Session session, final ObjectContentManager ocm, final boolean isBegin) {
+		final OCM.CreateOCMHook hook = OCM.getCreateOCMHook();
+		if ( hook != null ) {
+			if(isBegin)
+				hook.begin(session);
+			else
+				hook.end(session, ocm);
+		}
+	}
+
+	private static OCM.CreateOCMHook getCreateOCMHook() {
+		return createOCMHook;
 	}
 
 	private static void registerOCMNamespace(final Session session) throws javax.jcr.RepositoryException {
@@ -139,32 +170,6 @@ final public class OCM {
 		if ( session.getRootNode() == null ) {
 			throw new RepositoryException("Jcr session setup not successful.");
 		}
-	}
-
-	private static void registerNodeTypes(Session session) throws InvalidNodeTypeDefException, javax.jcr.RepositoryException, IOException {
-		// TODO
-		return;
-		/*
-		 * final InputStream xml = new
-		 * FileInputStream("./src/test/test-config/nodetypes/custom_nodetypes.xml"
-		 * );
-		 * 
-		 * // HINT: throws InvalidNodeTypeDefException, IOException final
-		 * QNodeTypeDefinition[] types = NodeTypeReader.read(xml);
-		 * 
-		 * final Workspace workspace = session.getWorkspace(); final
-		 * NodeTypeManager ntMgr = workspace.getNodeTypeManager(); final
-		 * NodeTypeRegistry ntReg = ((NodeTypeManagerImpl)
-		 * ntMgr).getNodeTypeRegistry();
-		 * 
-		 * for ( final int j = 0; j < types.length; j++ ) { final
-		 * QNodeTypeDefinition def = types[j]; try {
-		 * ntReg.getNodeTypeDef(def.getName()); } catch (
-		 * NoSuchNodeTypeException nsne ) { // HINT: if not already registered
-		 * than register custom node // type ntReg.registerNodeType(def); }
-		 * 
-		 * }
-		 */
 	}
 	
 	private static Session getLocalSession(final String userId, final String password) throws javax.jcr.RepositoryException {
