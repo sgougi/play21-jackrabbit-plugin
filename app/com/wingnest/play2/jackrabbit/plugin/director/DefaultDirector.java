@@ -75,7 +75,8 @@ public class DefaultDirector implements Director {
 		// String workspace = p.getProperty(CONF_JCR_DEFAULT_WORKSPACE, "default"); // TODO
 		final String repoConfiguration = c.getString(CONF_JCR_REPOSITORY_CONFIG, "./conf/repository.xml");
 		final String strHasRecreateRequire = c.getString(CONF_JCR_HAS_RECREATION_REQUIRE, "false");
-		return new DefaultConfig(userid, password, repoConfiguration, repositoryUri, strHasRecreateRequire);
+		final String nodeTypesXml = c.getString(CONF_NODETYPES_XML, null);
+		return new DefaultConfig(userid, password, repoConfiguration, repositoryUri, strHasRecreateRequire, nodeTypesXml);
 	}
 
 	private static class DefaultConfig implements Manager.Config {
@@ -85,13 +86,15 @@ public class DefaultDirector implements Director {
 		private final String repoConfiguration;
 		private final String repositoryUri;
 		private final boolean hasRecreateRequire;
+		private final String nodeTypesXml;
 
-		public DefaultConfig(final String userid, final String password, final String repoConfiguration, final String repositoryUri, final String strHasRecreateRequire) {
+		public DefaultConfig(final String userid, final String password, final String repoConfiguration, final String repositoryUri, final String strHasRecreateRequire, final String nodeTypesXml) {
 			this.userid = userid;
 			this.password = password;
 			this.repoConfiguration = repoConfiguration;
 			this.repositoryUri = repositoryUri;
 			this.hasRecreateRequire = Boolean.parseBoolean(strHasRecreateRequire.trim());
+			this.nodeTypesXml = nodeTypesXml;
 		}
 
 		@Override
@@ -118,6 +121,11 @@ public class DefaultDirector implements Director {
 		public boolean hasRecreateRequire() {
 			return hasRecreateRequire;
 		}
+		
+		@Override
+		public String getNodeTypesXml() {
+			return nodeTypesXml;
+		}		
 	}
 
 }

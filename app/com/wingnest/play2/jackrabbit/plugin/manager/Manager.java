@@ -32,6 +32,8 @@ public interface Manager {
 
 		boolean hasRecreateRequire();
 
+		String getNodeTypesXml();
+		
 	}
 
 	void initialize(Config config);

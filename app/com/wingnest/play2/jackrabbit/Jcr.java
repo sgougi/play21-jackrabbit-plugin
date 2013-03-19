@@ -15,6 +15,9 @@
  */
 package com.wingnest.play2.jackrabbit;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +25,15 @@ import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
+import javax.jcr.Workspace;
+import javax.jcr.nodetype.NoSuchNodeTypeException;
+import javax.jcr.nodetype.NodeTypeManager;
+
+import org.apache.jackrabbit.core.nodetype.InvalidNodeTypeDefException;
+import org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl;
+import org.apache.jackrabbit.core.nodetype.NodeTypeRegistry;
+import org.apache.jackrabbit.core.nodetype.xml.NodeTypeReader;
+import org.apache.jackrabbit.spi.QNodeTypeDefinition;
 
 import com.wingnest.play2.jackrabbit.plugin.manager.Manager;
 import com.wingnest.play2.jackrabbit.plugin.manager.Manager.Config;
@@ -49,8 +61,9 @@ final public class Jcr {
 		try {
 			session = getRepository().login(new SimpleCredentials(user, password.toCharArray()), null);
 			if ( session != null ) {
+				registerNodeTypes(session);								
 				getSessionMap().put(makeSessionMapKey(user, password, null), session);
-			}			
+			}
 			return session;
 		} catch ( Exception e ) {
 			throw new RepositoryException("Impossible to login ", e);
@@ -63,7 +76,8 @@ final public class Jcr {
 		try {
 			session = getRepository().login(new SimpleCredentials(user, password.toCharArray()), workspace);
 			if ( session != null ) {
-				getSessionMap().put(makeSessionMapKey(user, password, workspace), session);
+				registerNodeTypes(session);											
+				getSessionMap().put(makeSessionMapKey(user, password, workspace), session);				
 			}
 			return session;
 		} catch ( Exception e ) {
@@ -93,5 +107,26 @@ final public class Jcr {
 	private static String makeSessionMapKey(final String userId, final String password, final String workspace) {
 		return new StringBuffer().append(userId).append(":").append(password).append(":").append(workspace == null ? "" : workspace).toString();
 	}
-			
+
+	private static void registerNodeTypes(Session session) throws InvalidNodeTypeDefException, javax.jcr.RepositoryException, IOException {
+		final String nodeTypesXml = Jcr.getConfig().getNodeTypesXml();
+		if ( nodeTypesXml == null )
+			return;
+
+		final InputStream xml = new FileInputStream(nodeTypesXml);
+		final QNodeTypeDefinition[] types = NodeTypeReader.read(xml);
+		final Workspace workspace = session.getWorkspace();
+		final NodeTypeManager ntMgr = workspace.getNodeTypeManager();
+		final NodeTypeRegistry ntReg = ((NodeTypeManagerImpl) ntMgr).getNodeTypeRegistry();
+
+		for ( int j = 0; j < types.length; j++ ) {
+			final QNodeTypeDefinition def = types[j];
+			try {
+				ntReg.getNodeTypeDef(def.getName());
+			} catch ( NoSuchNodeTypeException nsne ) {
+				// HINT: if not already registered than register custom node type
+				ntReg.registerNodeType(def);
+			}
+		}
+	}	
 }
