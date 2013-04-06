@@ -7,7 +7,7 @@ Requirements
 =========
 
 * Java 5 or 6, 7
-* [Play 2.1.0](http://www.playframework.com/)
+* [Play 2.1.1](http://www.playframework.com/)
 
 Dependencies
 ============
@@ -18,7 +18,7 @@ Dependencies
 Install
 ====
 
-  1)  Install Play framework 2.1.0
+  1)  Install Play framework 2.1.1
   
   2)  Executing the command for installing the Jackrabbit Plugin
                
