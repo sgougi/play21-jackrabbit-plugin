@@ -37,6 +37,7 @@ final public class JackrabbitPlugin extends Plugin {
 	
 	@Override
 	public void onStart() {
+		JackrabbitLogger.bLoggerDebug = null;
 		ReflectionUtils.setClassLoader(Play.application().classloader());		
 		if ( DIRECTOR == null ) {
 			DIRECTOR = new DefaultDirector(new JackrabbitManager());

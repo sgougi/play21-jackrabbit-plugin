@@ -16,10 +16,12 @@
 package com.wingnest.play2.jackrabbit.plugin;
 
 import play.Logger;
+import play.Play;
 
 final public class JackrabbitLogger {
 
 	private static final String PLUGIN_PREFIX = "[Jackrabbit] ";
+	static Boolean bLoggerDebug = null;
 
 	static public void info(final String msg, final Object... args) {
 		Logger.info(makeMsg(msg, args));
@@ -38,7 +40,10 @@ final public class JackrabbitLogger {
 	}
 
 	static public void debug(final String msg, final Object... args) {
-		Logger.debug(makeMsg(msg, args));
+		if(bLoggerDebug == null)
+			bLoggerDebug = !Play.application().configuration().getBoolean(ConfigConsts.CONF_LOGGER_DEBUG_DISABLE, false);
+		if( bLoggerDebug )		
+			Logger.debug(makeMsg(msg, args));
 	}
 
 	static public void debug(final Throwable t, final String msg, final Object... args) {
