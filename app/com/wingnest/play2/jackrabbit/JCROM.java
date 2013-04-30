@@ -46,7 +46,10 @@ public class JCROM {
 	
 	public static Jcrom getJcrom()  {
 		try {
-			final Session session = getLocalSession(Jcr.getConfig().getUserId(), Jcr.getConfig().getPassword());			
+			final String userId = Jcr.getConfig().getUserId();
+			Session session = Jcr.getCurrentSession(userId);
+			if ( session == null )
+				session = getLocalSession(userId, Jcr.getConfig().getPassword());			
 			return createJcrom(session);
 		} catch ( Exception e ) {
 			throw new JackrabbitUnexpectedException(e);
@@ -55,7 +58,10 @@ public class JCROM {
 	
 	public static Jcrom getJcrom(final String workspace)  {
 		try {
-			final Session session = getLocalSession(Jcr.getConfig().getUserId(), Jcr.getConfig().getPassword(), workspace);			
+			final String userId = Jcr.getConfig().getUserId();
+			Session session = Jcr.getCurrentSession(userId, workspace);
+			if ( session == null )
+				session = getLocalSession(Jcr.getConfig().getUserId(), Jcr.getConfig().getPassword(), workspace);			
 			return createJcrom(session);
 		} catch ( Exception e ) {
 			throw new JackrabbitUnexpectedException(e);
@@ -64,7 +70,9 @@ public class JCROM {
 
 	public static Jcrom getJcrom(final String userId, final String password) {
 		try {
-			final Session session = getLocalSession(userId, password);			
+			Session session = Jcr.getCurrentSession(userId);
+			if ( session == null )
+				session = getLocalSession(userId, password);			
 			return createJcrom(session);
 		} catch ( Exception e ) {
 			throw new JackrabbitUnexpectedException(e);
@@ -73,7 +81,9 @@ public class JCROM {
 	
 	public static Jcrom getJcrom(final String userId, final String password, final String workspace) {
 		try {
-			final Session session = getLocalSession(userId, password, workspace);			
+			Session session = Jcr.getCurrentSession(userId, workspace);
+			if ( session == null )
+				session = getLocalSession(userId, password, workspace);			
 			return createJcrom(session);
 		} catch ( Exception e ) {
 			throw new JackrabbitUnexpectedException(e);

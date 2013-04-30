@@ -44,8 +44,6 @@ final public class OCM {
 	/** namespace constant */
 	public static final String OCM_NAMESPACE = "http://jackrabbit.apache.org/ocm";
 
-	private static CreateOCMHook createOCMHook = null;
-	
 	public static ObjectContentManager getOCM(final Session session)  {
 		try {
 			return createOCM(session);
@@ -58,7 +56,10 @@ final public class OCM {
 	
 	public static ObjectContentManager getOCM()  {
 		try {
-			final Session session = getLocalSession(Jcr.getConfig().getUserId(), Jcr.getConfig().getPassword());			
+			final String userId = Jcr.getConfig().getUserId(); 
+			Session session = Jcr.getCurrentSession(userId);
+			if ( session == null )
+				session = getLocalSession(userId, Jcr.getConfig().getPassword());			
 			return createOCM(session);
 		} catch ( RepositoryException e ) {
 			throw e;
@@ -69,7 +70,10 @@ final public class OCM {
 	
 	public static ObjectContentManager getOCM(final String workspace)  {
 		try {
-			final Session session = getLocalSession(Jcr.getConfig().getUserId(), Jcr.getConfig().getPassword(), workspace);			
+			final String userId = Jcr.getConfig().getUserId();
+			Session session = Jcr.getCurrentSession(userId, workspace);
+			if ( session == null )
+				session = getLocalSession(Jcr.getConfig().getUserId(), Jcr.getConfig().getPassword(), workspace);			
 			return createOCM(session);
 		} catch ( RepositoryException e ) {
 			throw e;
@@ -80,7 +84,9 @@ final public class OCM {
 
 	public static ObjectContentManager getOCM(final String userId, final String password) {
 		try {
-			final Session session = getLocalSession(userId, password);			
+			Session session = Jcr.getCurrentSession(userId);
+			if ( session == null )
+				session = getLocalSession(userId, password);			
 			return createOCM(session);
 		} catch ( RepositoryException e ) {
 			throw e;
@@ -91,17 +97,15 @@ final public class OCM {
 	
 	public static ObjectContentManager getOCM(final String userId, final String password, final String workspace) {
 		try {
-			final Session session = getLocalSession(userId, password, workspace);			
+			Session session = Jcr.getCurrentSession(userId, workspace);
+			if ( session == null )
+				session = getLocalSession(userId, password, workspace);			
 			return createOCM(session);
 		} catch ( RepositoryException e ) {
 			throw e;
 		} catch ( Exception e ) {
 			throw new RepositoryException(e);
 		}
-	}
-	
-	public static void setCreateOCMHook(final CreateOCMHook hook){
-		OCM.createOCMHook = hook;	
 	}
 
 	//
@@ -126,7 +130,6 @@ final public class OCM {
 
 	private static ObjectContentManager createOCM(final Session session) throws javax.jcr.RepositoryException, InvalidNodeTypeDefException, IOException {
 		registerOCMNamespace(session);
-		callHook(session, null, true);
 		
 		@SuppressWarnings("rawtypes")
 		final List<Class> classes = new ArrayList<Class>();
@@ -136,22 +139,8 @@ final public class OCM {
 		}
 		classes.addAll(Nodes.nodes);
 		ObjectContentManager ocm = new ObjectContentManagerImpl(session, new AnnotationMapperImpl(classes));
-		callHook(session, ocm, false);
+
 		return ocm; 
-	}
-
-	private static void callHook(final Session session, final ObjectContentManager ocm, final boolean isBegin) {
-		final OCM.CreateOCMHook hook = OCM.getCreateOCMHook();
-		if ( hook != null ) {
-			if(isBegin)
-				hook.begin(session);
-			else
-				hook.end(session, ocm);
-		}
-	}
-
-	private static OCM.CreateOCMHook getCreateOCMHook() {
-		return createOCMHook;
 	}
 
 	private static void registerOCMNamespace(final Session session) throws javax.jcr.RepositoryException {
@@ -183,12 +172,4 @@ final public class OCM {
 		return session;
 	}	
 	
-
-	public interface CreateOCMHook {
-
-		void begin(Session session);
-		
-		void end(Session session, ObjectContentManager ocm);
-
-	}	
 }
