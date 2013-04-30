@@ -67,7 +67,7 @@ The com.wingnest.play2.jackrabbit.[OCM](app/com/wingnest/play2/jackrabbit/OCM.ja
 
 The com.wingnest.play2.jackrabbit.[JCROM](app/com/wingnest/play2/jackrabbit/JCROM.java) class is a Facade class for the JCROM.
 
-* Jcrom JCROM.getJcrom(...)
+* Jcrom JCROM.createJcrom()
 
 Known Issues
 =============

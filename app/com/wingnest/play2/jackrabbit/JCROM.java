@@ -15,80 +15,29 @@ package com.wingnest.play2.jackrabbit;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
-
-import org.apache.jackrabbit.core.nodetype.InvalidNodeTypeDefException;
 import org.jcrom.Jcrom;
-import org.jcrom.SessionFactory;
 import org.jcrom.annotations.JcrNode;
 
 import play.Play;
 
 import com.wingnest.play2.jackrabbit.plugin.ConfigConsts;
 import com.wingnest.play2.jackrabbit.plugin.JackrabbitLogger;
-import com.wingnest.play2.jackrabbit.plugin.exceptions.JackrabbitUnexpectedException;
 import com.wingnest.play2.jackrabbit.plugin.utils.TypeUtils;
 
 public class JCROM {
 
-	public static Jcrom getJcrom(final Session session)  {
-		try {
-			return createJcrom(session);
-		} catch ( Exception e ) {
-			throw new JackrabbitUnexpectedException(e);
+	public static Jcrom createJcrom() {
+		final Set<Class<?>> classes = new HashSet<Class<?>>();
+		if ( Play.isDev() ) {
+			Nodes.nodes.clear();
+			Nodes.refresh();
 		}
-	}
-	
-	public static Jcrom getJcrom()  {
-		try {
-			final String userId = Jcr.getConfig().getUserId();
-			Session session = Jcr.getCurrentSession(userId);
-			if ( session == null )
-				session = getLocalSession(userId, Jcr.getConfig().getPassword());			
-			return createJcrom(session);
-		} catch ( Exception e ) {
-			throw new JackrabbitUnexpectedException(e);
-		}
-	}
-	
-	public static Jcrom getJcrom(final String workspace)  {
-		try {
-			final String userId = Jcr.getConfig().getUserId();
-			Session session = Jcr.getCurrentSession(userId, workspace);
-			if ( session == null )
-				session = getLocalSession(Jcr.getConfig().getUserId(), Jcr.getConfig().getPassword(), workspace);			
-			return createJcrom(session);
-		} catch ( Exception e ) {
-			throw new JackrabbitUnexpectedException(e);
-		}
-	}
-
-	public static Jcrom getJcrom(final String userId, final String password) {
-		try {
-			Session session = Jcr.getCurrentSession(userId);
-			if ( session == null )
-				session = getLocalSession(userId, password);			
-			return createJcrom(session);
-		} catch ( Exception e ) {
-			throw new JackrabbitUnexpectedException(e);
-		}
-	}
-	
-	public static Jcrom getJcrom(final String userId, final String password, final String workspace) {
-		try {
-			Session session = Jcr.getCurrentSession(userId, workspace);
-			if ( session == null )
-				session = getLocalSession(userId, password, workspace);			
-			return createJcrom(session);
-		} catch ( Exception e ) {
-			throw new JackrabbitUnexpectedException(e);
-		}
-	}
+		classes.addAll(Nodes.nodes);
+		return new Jcrom(classes);
+	}	
 	
 	final private static class Nodes {
 		private final static Set<Class<?>> nodes;
@@ -108,31 +57,5 @@ public class JCROM {
 			}
 		}
 	}
-
-	private static Jcrom createJcrom(final Session session) throws javax.jcr.RepositoryException, InvalidNodeTypeDefException, IOException {
-		final Set<Class<?>> classes = new HashSet<Class<?>>();
-		if ( Play.isDev() ) {
-			Nodes.nodes.clear();
-			Nodes.refresh();
-		}
-		classes.addAll(Nodes.nodes);
-		final Jcrom jcrom = new Jcrom(classes);
-		jcrom.setSessionFactory(new SessionFactory(){
-			@Override
-			public Session getSession() throws RepositoryException {
-				return session;
-			}});
-		return jcrom;
-	}	
-		
-	private static Session getLocalSession(final String userId, final String password) throws javax.jcr.RepositoryException {
-		final Session session = Jcr.login(userId, password);
-		return session;
-	}
-	
-	private static Session getLocalSession(final String userId, final String password, final String workspace) throws javax.jcr.RepositoryException {
-		final Session session = Jcr.login(userId, password, workspace);
-		return session;
-	}		
 	
 }
