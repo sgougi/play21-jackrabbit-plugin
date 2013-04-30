@@ -17,6 +17,8 @@ package com.wingnest.play2.jackrabbit.plugin;
 
 public class ConfigConsts {
 
+	public static final String MODELS_PACKAGE = "models";
+	
 	public static final String CONF_JCR_USERID = "jackrabbit.jcr.userid";
 	public static final String CONF_JCR_PASSWORD = "jackrabbit.jcr.password";
 //	public static final String CONF_JCR_DEFAULT_WORKSPACE = "jackrabbit.jcr.default_workspace";
@@ -25,5 +27,5 @@ public class ConfigConsts {
 	public static final String CONF_JCR_HAS_RECREATION_REQUIRE = "jackrabbit.jcr.recreation_require";
 	public static final String CONF_NODETYPES_XML = "jackrabbit.jcr.nodetypes_xml";
 	public static final String CONF_LOGGER_DEBUG_DISABLE = "jackrabbit.logger.debug.disable";
-	
+
 }

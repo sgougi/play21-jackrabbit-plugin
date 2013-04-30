@@ -14,6 +14,7 @@ Dependencies
 
 * [Apache Jackrabbit 2.6.0](http://jackrabbit.apache.org/)
 * [Apache Jackrabbit OCM 2.0.0](http://jackrabbit.apache.org/object-content-mapping.html)
+* [JCROM 2.0.0](https://code.google.com/p/jcrom/)
 
 Install
 ====
@@ -53,12 +54,20 @@ The com.wingnest.play2.jackrabbit.[Jcr](app/com/wingnest/play2/jackrabbit/Jcr.ja
 
 * Repository Jcr.getRepository()
 * Session Jcr.login()
+* Session Jcr.getCurrentSession
+* void Jcr.setCurrentSession()
 
 ## Facade Class for [OCM](http://jackrabbit.apache.org/object-content-mapping.html)
 
 The com.wingnest.play2.jackrabbit.[OCM](app/com/wingnest/play2/jackrabbit/OCM.java) class is a Facade class for the OCM.
 
-* ObjectContentManager OCM.getOCM()
+* ObjectContentManager OCM.getOCM(...)
+
+## Facade Class for [JCROM](https://code.google.com/p/jcrom/)
+
+The com.wingnest.play2.jackrabbit.[JCROM](app/com/wingnest/play2/jackrabbit/JCROM.java) class is a Facade class for the JCROM.
+
+* Jcrom JCROM.getJcrom(...)
 
 Known Issues
 =============

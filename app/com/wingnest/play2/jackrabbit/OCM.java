@@ -32,18 +32,11 @@ import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
 
 import play.Play;
 
+import com.wingnest.play2.jackrabbit.plugin.ConfigConsts;
 import com.wingnest.play2.jackrabbit.plugin.JackrabbitLogger;
 import com.wingnest.play2.jackrabbit.plugin.utils.TypeUtils;
 
 final public class OCM {
-
-	public interface CreateOCMHook {
-
-		void begin(Session session);
-		
-		void end(Session session, ObjectContentManager ocm);
-
-	}
 
 	/** namespace prefix constant */
 	public static final String OCM_NAMESPACE_PREFIX = "ocm";
@@ -51,9 +44,17 @@ final public class OCM {
 	/** namespace constant */
 	public static final String OCM_NAMESPACE = "http://jackrabbit.apache.org/ocm";
 
-	private static final String MODELS_PACKAGE = "models";
-
 	private static CreateOCMHook createOCMHook = null;
+	
+	public static ObjectContentManager getOCM(final Session session)  {
+		try {
+			return createOCM(session);
+		} catch ( RepositoryException e ) {
+			throw e;
+		} catch ( Exception e ) {
+			throw new RepositoryException(e);
+		}
+	}
 	
 	public static ObjectContentManager getOCM()  {
 		try {
@@ -114,7 +115,7 @@ final public class OCM {
 		}
 		private static void refresh() {
 			JackrabbitLogger.debug("Nodes.refresh");
-			for ( final  Class<?> javaClass : TypeUtils.getSubTypesOf(Play.application(), MODELS_PACKAGE, null) ) {
+			for ( final  Class<?> javaClass : TypeUtils.getSubTypesOf(Play.application(), ConfigConsts.MODELS_PACKAGE, null) ) {
 				if ( javaClass.isAnnotationPresent(Node.class) ) {
 					nodes.add(javaClass);
 					JackrabbitLogger.debug("registered Node class : %s ", javaClass.getName());
@@ -180,5 +181,14 @@ final public class OCM {
 	private static Session getLocalSession(final String userId, final String password, final String workspace) throws javax.jcr.RepositoryException {
 		final Session session = Jcr.login(userId, password, workspace);
 		return session;
-	}		
+	}	
+	
+
+	public interface CreateOCMHook {
+
+		void begin(Session session);
+		
+		void end(Session session, ObjectContentManager ocm);
+
+	}	
 }

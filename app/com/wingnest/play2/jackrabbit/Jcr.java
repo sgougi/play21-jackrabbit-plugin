@@ -55,33 +55,55 @@ final public class Jcr {
 		return RAW_STUFF.getManager().getRepository();
 	}
 
-	public static Session login(final String user, final String password) throws RepositoryException  {
-		Session session = getSessionMap().get(makeSessionMapKey(user, password, null));
-		if ( session != null && session.isLive() ) return session;		
-		try {
-			session = getRepository().login(new SimpleCredentials(user, password.toCharArray()), null);
-			if ( session != null ) {
-				registerNodeTypes(session);								
-				getSessionMap().put(makeSessionMapKey(user, password, null), session);
-			}
-			return session;
-		} catch ( Exception e ) {
-			throw new RepositoryException("Impossible to login ", e);
+	public static Session getCurrentSession(final String userId, final String workspace) {
+		return getSessionMap().get(makeSessionMapKey(userId, null));
+	}
+	
+	public static Session getCurrentSession(final String userId) {
+		return getCurrentSession(userId, null);
+	}	
+	
+	public static void setCurrentSession(final Session session, final String userId) throws RepositoryException   {
+		setCurrentSession(session, userId, null); 
+	}
+	
+	public static void setCurrentSession(final Session session, final String userId, final String workspace) throws RepositoryException   {
+		final String key = makeSessionMapKey(userId, workspace);
+		Session curSession = getSessionMap().get(key);
+		if ( curSession != null && session.isLive() ) {
+			getSessionMap().remove(key);
+			curSession.logout();
+		}
+		if ( session != null ) {
+			try {
+				registerNodeTypes(session);
+			} catch ( Exception e ) {
+				throw new RepositoryException("Impossible to set current session", e);
+			}											
+			getSessionMap().put(key, session);				
 		}
 	}
-
-	public static Session login(final String user, final String password, final String workspace) throws RepositoryException  {
-		Session session = getSessionMap().get(makeSessionMapKey(user, password, workspace));
-		if ( session != null && session.isLive() ) return session;		
+	
+	public static Session login(final String userId, final String password) throws RepositoryException  {
+		return login(userId, password, null);
+	}
+	
+	public static Session login(final String userId, final String password, final String workspace) throws RepositoryException  {
+		final String key = makeSessionMapKey(userId, workspace);
+		Session session = getSessionMap().get(key);
+		if ( session != null && session.isLive() ) {
+			getSessionMap().remove(key);
+			session.logout();
+		}
 		try {
-			session = getRepository().login(new SimpleCredentials(user, password.toCharArray()), workspace);
+			session = getRepository().login(new SimpleCredentials(userId, password.toCharArray()), workspace);
 			if ( session != null ) {
 				registerNodeTypes(session);											
-				getSessionMap().put(makeSessionMapKey(user, password, workspace), session);				
+				getSessionMap().put(key, session);				
 			}
 			return session;
 		} catch ( Exception e ) {
-			throw new RepositoryException("Impossible to login ", e);
+			throw new RepositoryException("Impossible to login", e);
 		}
 	}
 	
@@ -104,11 +126,11 @@ final public class Jcr {
 		return sessionMap;
 	}	
 
-	private static String makeSessionMapKey(final String userId, final String password, final String workspace) {
-		return new StringBuffer().append(userId).append(":").append(password).append(":").append(workspace == null ? "" : workspace).toString();
+	private static String makeSessionMapKey(final String userId, final String workspace) {
+		return new StringBuffer().append(userId).append(":").append(workspace == null ? "" : workspace).toString();
 	}
 
-	private static void registerNodeTypes(Session session) throws InvalidNodeTypeDefException, javax.jcr.RepositoryException, IOException {
+	private static void registerNodeTypes(final Session session) throws InvalidNodeTypeDefException, javax.jcr.RepositoryException, IOException {
 		final String nodeTypesXml = Jcr.getConfig().getNodeTypesXml();
 		if ( nodeTypesXml == null )
 			return;

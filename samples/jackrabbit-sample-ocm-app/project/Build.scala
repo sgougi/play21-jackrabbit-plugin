@@ -4,7 +4,7 @@ import play.Project._
 
 object ApplicationBuild extends Build {
 
-  val appName         = "play21-jackrabbit-sample-app"
+  val appName         = "play21-jackrabbit-sample-ocm-app"
   val appVersion      = "1.0"
 
   val appDependencies = Seq(
