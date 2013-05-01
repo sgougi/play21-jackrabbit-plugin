@@ -5,10 +5,10 @@ import play.Project._
 object ApplicationBuild extends Build {
 
   val appName         = "play21-jackrabbit-sample-ocm-app"
-  val appVersion      = "1.0"
+  val appVersion      = "1.1"
 
   val appDependencies = Seq(
-    	"com.wingnest.play2" % "play21-jackrabbit-plugin_2.10" % "1.0",
+    	"com.wingnest.play2" % "play21-jackrabbit-plugin_2.10" % "1.1",
     	"com.google.inject" % "guice" % "3.0", 
     	javaCore
   )
