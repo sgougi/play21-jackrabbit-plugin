@@ -20,4 +20,5 @@ dist
 /bin
 .shell_history
 /samples/jackrabbit-sample-ocm-app/repository
+/samples/jackrabbit-sample-jcrom-app/repository
 *.log

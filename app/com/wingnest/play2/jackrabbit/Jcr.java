@@ -56,7 +56,13 @@ final public class Jcr {
 	}
 
 	public static Session getCurrentSession(final String userId, final String workspace) {
-		return getSessionMap().get(makeSessionMapKey(userId, null));
+		final String key = makeSessionMapKey(userId, workspace);
+		final Session session = getSessionMap().get(key);
+		if ( session != null && !session.isLive() ) {
+			getSessionMap().remove(key);
+			return null;
+		}		
+		return session;
 	}
 	
 	public static Session getCurrentSession(final String userId) {

@@ -48,7 +48,6 @@ public class JCROM {
 		}
 		private static void refresh() {
 			JackrabbitLogger.debug("Nodes.refresh");
-			//org.jcrom.util.ReflectionUtils.getClasses(Play.application().classloader(), ConfigConsts.MODELS_PACKAGE);
 			for ( final  Class<?> javaClass : TypeUtils.getSubTypesOf(Play.application(), ConfigConsts.MODELS_PACKAGE, null) ) {
 				if ( javaClass.isAnnotationPresent(JcrNode.class) ) {
 					nodes.add(javaClass);
