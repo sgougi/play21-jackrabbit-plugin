@@ -38,15 +38,16 @@ At a command prompt, type the following commands:
 
          % cd play21-jackrabbit-plugin
          % cd samples
-         % cd jackrabbit-simple-app
+         % cd jackrabbit-simple-ocm-app
+            ( or % cd jackrabbit-simple-jcrom-app ) 
          % play run
 
 There are basic usage in the source code of a [sample application](samples). 
 
-* [Annotated model classes](samples/jackrabbit-sample-app/app/models)
-* [Application configuration: conf/application.conf](samples/jackrabbit-sample-app/conf/application.conf)
-* [Dependency settings: project/Build.scala](samples/jackrabbit-sample-app/project/Build.scala)  
-* [Controller with OCM](samples/jackrabbit-sample-app/app/controllers/Application.java)
+* [Annotated model classes](samples/jackrabbit-sample-ocm-app/app/models)
+* [Application configuration: conf/application.conf](samples/jackrabbit-sample-ocm-app/conf/application.conf)
+* [Dependency settings: project/Build.scala](samples/jackrabbit-sample-ocm-app/project/Build.scala)  
+* [Controller with OCM](samples/jackrabbit-sample-ocm-app/app/controllers/Application.java)
 
 ## Facade Class for JCR
 
