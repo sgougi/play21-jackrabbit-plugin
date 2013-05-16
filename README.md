@@ -12,7 +12,7 @@ Requirements
 Dependencies
 ============
 
-* [Apache Jackrabbit 2.6.0](http://jackrabbit.apache.org/)
+* [Apache Jackrabbit 2.7.0](http://jackrabbit.apache.org/)
 * [Apache Jackrabbit OCM 2.0.0](http://jackrabbit.apache.org/object-content-mapping.html)
 * [JCROM 2.0.0](https://code.google.com/p/jcrom/)
 
