@@ -42,10 +42,6 @@ import com.wingnest.play2.jackrabbit.plugin.manager.Manager.Config;
 final public class Jcr {
 
 	final private static ThreadLocal<Map<String, Session>> TL_SESSION_MAP = new ThreadLocal<Map<String, Session>>(); 
-
-	public interface RawStuff {
-		Manager getManager();
-	}
 	
 	public static Config getConfig() {
 		return RAW_STUFF.getManager().getConfig();
@@ -114,7 +110,11 @@ final public class Jcr {
 	}
 	
 	//
-	
+
+	public interface RawStuff {
+		Manager getManager();
+	}
+
 	private static RawStuff RAW_STUFF = null;
 	
 	public static void setRawStuff(final RawStuff rawStuff) {
