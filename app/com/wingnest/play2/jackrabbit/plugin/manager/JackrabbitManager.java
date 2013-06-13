@@ -32,7 +32,6 @@ import org.apache.jackrabbit.core.config.BeanConfigVisitor;
 import org.apache.jackrabbit.core.config.ConfigurationException;
 import org.apache.jackrabbit.core.config.RepositoryConfig;
 import org.apache.jackrabbit.core.config.RepositoryConfigurationParser;
-import org.apache.jackrabbit.core.util.db.ConnectionFactory;
 import org.apache.jackrabbit.ocm.exception.RepositoryException;
 import org.apache.jackrabbit.rmi.client.ClientAdapterFactory;
 import org.apache.jackrabbit.rmi.client.ClientRepositoryFactory;
