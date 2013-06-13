@@ -172,7 +172,7 @@ public class JackrabbitManager implements Manager {
 			BeanConfigVisitor visitor = new BeanConfigVisitor() {
 				public void visit(BeanConfig config) {
 					ClassLoader cl = Play.application().classloader();
-					config.setDefaultClassLoader(cl);
+					BeanConfig.setDefaultClassLoader(cl);
 					config.setClassLoader(cl);
 				}
 			};
