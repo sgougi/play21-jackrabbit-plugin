@@ -15,19 +15,28 @@
  */
 package com.wingnest.play2.jackrabbit.plugin.manager;
 
+import static org.apache.jackrabbit.core.config.RepositoryConfigurationParser.REPOSITORY_HOME_VARIABLE;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.util.Properties;
 
 import javax.jcr.Repository;
 
 import org.apache.jackrabbit.core.RepositoryImpl;
+import org.apache.jackrabbit.core.config.BeanConfig;
+import org.apache.jackrabbit.core.config.BeanConfigVisitor;
+import org.apache.jackrabbit.core.config.ConfigurationException;
 import org.apache.jackrabbit.core.config.RepositoryConfig;
+import org.apache.jackrabbit.core.config.RepositoryConfigurationParser;
 import org.apache.jackrabbit.ocm.exception.RepositoryException;
 import org.apache.jackrabbit.rmi.client.ClientAdapterFactory;
 import org.apache.jackrabbit.rmi.client.ClientRepositoryFactory;
 import org.apache.jackrabbit.rmi.repository.URLRemoteRepository;
+import org.xml.sax.InputSource;
 
 import play.Play;
 
@@ -90,7 +99,7 @@ public class JackrabbitManager implements Manager {
 			}
 		}
 		try {
-			final RepositoryConfig repoConfig = RepositoryConfig.create(config.getRepoConfiguration(), repoDir.getCanonicalPath());
+			final RepositoryConfig repoConfig = PlayRepositoryConfig.create(config.getRepoConfiguration(), repoDir.getCanonicalPath());
 			return RepositoryImpl.create(repoConfig);
 		} catch ( Exception e ) {
 			throw new RepositoryException(e);
@@ -123,6 +132,53 @@ public class JackrabbitManager implements Manager {
 	@Override
 	public Repository getRepository() {
 		return repository;
+	}
+	
+	/**
+	 * Replacement class which injects the Play classloader.
+	 */
+	private static class PlayRepositoryConfig {
+	  
+		/*
+		 * Static methods can't be overridden in Java, so this is a condensed
+		 * version of RepositoryConfig.
+		 */
+		public static RepositoryConfig create(String file, String home)
+				throws ConfigurationException {
+			URI uri = new File(file).toURI();
+			Properties variables = new Properties(System.getProperties());
+			variables.setProperty(REPOSITORY_HOME_VARIABLE, home);
+			return create(new InputSource(uri.toString()), variables);
+		}
+		
+		/*
+		 * This is a direct copy from RepositoryConfig, except where marked.
+		 */		
+		public static RepositoryConfig create(InputSource xml, Properties variables)
+				throws ConfigurationException {
+			RepositoryConfigurationParser parser =
+				new RepositoryConfigurationParser(variables);
+			
+			// Attach visitor to set Play classloader on all configs
+			attachVisitor(parser);
+				
+			RepositoryConfig config = parser.parseRepositoryConfig(xml);
+			config.init();
+	
+			return config;
+		}
+		
+		private static void attachVisitor(RepositoryConfigurationParser parser) {
+			BeanConfigVisitor visitor = new BeanConfigVisitor() {
+				public void visit(BeanConfig config) {
+					ClassLoader cl = Play.application().classloader();
+					config.setDefaultClassLoader(cl);
+					config.setClassLoader(cl);
+				}
+			};
+			parser.setConfigVisitor(visitor);
+		}
+		
 	}
 
 }
