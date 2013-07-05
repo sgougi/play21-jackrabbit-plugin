@@ -5,14 +5,14 @@ import play.Project._
 object ApplicationBuild extends Build {
 
   val appName         = "play21-jackrabbit-plugin"
-  val appVersion      = "1.3.1"
+  val appVersion      = "1.3.2"
 
   val appDependencies = Seq(
     // Add your project dependencies here,
     "javax.jcr" % "jcr" % "2.0",
     "org.apache.jackrabbit" % "jackrabbit-core" % "2.7.0",
     "org.apache.jackrabbit" % "jackrabbit-jcr-rmi" % "2.7.0",
-    "org.jcrom" % "jcrom" % "2.0.1",    
+    "org.jcrom" % "jcrom" % "2.1.0",    
     "org.apache" % "jackrabbit-ocm" % "2.0.0",
     javaCore
   )

@@ -10,6 +10,7 @@ import models.formdata.LogData;
 
 import org.jcrom.Jcrom;
 import org.jcrom.dao.AbstractJcrDAO;
+import org.jcrom.util.NodeFilter;
 
 public class LogDAO extends AbstractJcrDAO<Log>  {
 
@@ -19,7 +20,7 @@ public class LogDAO extends AbstractJcrDAO<Log>  {
 	
 	public List<Log> list() {
 		try {
-			return findByXPath("/jcr:root/*[@title!=''] order by @createdDate descending", "*", -1);
+			return findByXPath("/jcr:root/*[@title!=''] order by @createdDate descending", new NodeFilter("*"), -1, -1);
 		} catch ( Exception e ) {
 			throw new RuntimeException(e);
 		}
