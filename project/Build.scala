@@ -5,7 +5,7 @@ import play.Project._
 object ApplicationBuild extends Build {
 
   val appName         = "play21-jackrabbit-plugin"
-  val appVersion      = "1.3.2"
+  val appVersion      = "1.3.3"
 
   val appDependencies = Seq(
     // Add your project dependencies here,

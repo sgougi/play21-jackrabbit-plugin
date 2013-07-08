@@ -19,7 +19,7 @@ Dependencies
 Install
 ====
 
-  1)  Install Play framework 2.1.1
+  1)  Install Play framework 2.1.2
   
   2)  Executing the command for installing the Jackrabbit Plugin
                
