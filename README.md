@@ -16,10 +16,10 @@ Dependencies
 * [Apache Jackrabbit OCM 2.0.0](http://jackrabbit.apache.org/object-content-mapping.html)
 * [JCROM 2.1.0](https://code.google.com/p/jcrom/)
 
-Install
-====
+Setup
+=====
 
-  1)  Install Play framework 2.2
+  1)  Installing Play framework 2.2
   
   2)  Executing the command for installing the Jackrabbit Plugin
                
@@ -31,7 +31,7 @@ Install
          % play publish-local
 
 
-How to run sample application and Usage
+Running sample applications and Usage
 =======================
 
 At a command prompt, type the following commands:
