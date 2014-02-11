@@ -7,19 +7,19 @@ Requirements
 =========
 
 * Java 5, 6 or 7
-* [Play 2.2](http://www.playframework.com/)
+* [Play 2.2.1](http://www.playframework.com/)
 
 Dependencies
 ============
 
-* [Apache Jackrabbit 2.7.1](http://jackrabbit.apache.org/)
+* [Apache Jackrabbit 2.7.3](http://jackrabbit.apache.org/)
 * [Apache Jackrabbit OCM 2.0.0](http://jackrabbit.apache.org/object-content-mapping.html)
 * [JCROM 2.1.0](https://code.google.com/p/jcrom/)
 
 Setup
 =====
 
-  1)  Installing Play framework 2.2
+  1)  Installing Play framework 2.2.1
   
   2)  Executing the command for installing the Jackrabbit Plugin
                
